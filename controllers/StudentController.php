@@ -54,16 +54,44 @@ class StudentController extends \yii\web\Controller
 		 }
 	}
 
+
+        public function actionUpdateStudent()
+    {
+            \Yii::$app->response->format = \yii\web\Response:: FORMAT_JSON; 
+        
+          $attributes = \yii::$app->request->post();
+        
+
+          $student = Student::find()->where(['ID' => $attributes['id'] ])->one();
+         
+           if(count($student) > 0 )
+           {
+            $student->attributes = \yii::$app->request->post();
+            $student->save();
+            return array('status' => true, 'data'=> 'Student record is updated successfully');
+           
+           }
+
+         else
+         {
+            return array('status'=>false,'data'=> 'No Student Found'); 
+         }
+    }
+
+
 	public function actionDeleteStudent()
 	{
 			\Yii::$app->response->format = \yii\web\Response:: FORMAT_JSON; 
 		
 		  $attributes = \yii::$app->request->post();
-		
+          print_r($_POST);
+		  var_dump($attributes);
+          exit(); 
+
     	  $student = Student::find()->where(['ID' => $attributes['id'] ])->one();
     	 
     	   if(count($student) > 0 )
-		 {
+		   {
 		  
     	   	$student->delete();
   			return array('status' => true, 'data'=> 'Student record is successfully deleted');
